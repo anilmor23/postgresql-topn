@@ -304,17 +304,18 @@ topn_add(PG_FUNCTION_ARGS)
 	MergeJsonbIntoTopnAggState(jsonb, stateTopn);
 
 	itemText = PG_GETARG_TEXT_P(1);
+	frequencyIncrement = PG_GETARG_INT32(1);
 	text_to_cstring_buffer(itemText, itemString, MAX_KEYSIZE);
 
 	item = hash_search(stateTopn->hashTable, (void *) itemString,
 					   HASH_ENTER, &found);
 	if (found)
 	{
-		IncreaseItemFrequency(item, 1);
+		IncreaseItemFrequency(item, frequencyIncrement);
 	}
 	else
 	{
-		item->frequency = 1;
+		item->frequency = frequencyIncrement;
 
 		PruneHashTable(stateTopn->hashTable, NumberOfCounters, NumberOfCounters);
 	}

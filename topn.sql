@@ -4,7 +4,7 @@ CREATE FUNCTION topn(jsonb, integer)
     AS 'MODULE_PATHNAME'
     LANGUAGE C IMMUTABLE STRICT;
 
-CREATE FUNCTION topn_add(jsonb, text)
+CREATE FUNCTION topn_add(jsonb, text, integer)
 	RETURNS jsonb
 	AS 'MODULE_PATHNAME'
 	LANGUAGE C IMMUTABLE;
@@ -54,7 +54,7 @@ CREATE OPERATOR + (
 
 COMMENT ON FUNCTION topn(top_items jsonb, n integer)
 	IS 'get the top n items from top_items';
-COMMENT ON FUNCTION topn_add(top_items jsonb, item text)
+COMMENT ON FUNCTION topn_add(top_items jsonb, item text, n integer)
 	IS 'insert the item into the top_items counter';
 COMMENT ON FUNCTION topn_union(top_items jsonb, top_items2 jsonb)
 	IS 'take the union of the two top_items counter';
