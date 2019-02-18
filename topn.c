@@ -265,7 +265,7 @@ topn_add(PG_FUNCTION_ARGS)
 	text *itemText = NULL;
 	bool found = false;
 	char itemString[MAX_KEYSIZE];
-
+        int frequencyIncrement=1;
 	/*
 	 * Create stateTopn when the first non-null item arrive by using the item's type.
 	 * After stateTopn is created once, use it during aggregation and to pass the related
@@ -304,7 +304,7 @@ topn_add(PG_FUNCTION_ARGS)
 	MergeJsonbIntoTopnAggState(jsonb, stateTopn);
 
 	itemText = PG_GETARG_TEXT_P(1);
-	frequencyIncrement = PG_GETARG_INT32(1);
+	frequencyIncrement = PG_GETARG_INT32(2);
 	text_to_cstring_buffer(itemText, itemString, MAX_KEYSIZE);
 
 	item = hash_search(stateTopn->hashTable, (void *) itemString,
